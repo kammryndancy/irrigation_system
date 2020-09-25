@@ -1,0 +1,19 @@
+{
+  "switches":[
+    {
+      "id":"sw1",
+      "state":"off",
+      "name":"Front Garden"
+    },
+    {
+      "id":"sw2",
+      "state":"off",
+      "name":"Back Garden"
+    },
+    {
+      "id":"sw3",
+      "state":"off",
+      "name":"Produce Garden"
+    }
+  ]
+}

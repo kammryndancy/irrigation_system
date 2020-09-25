@@ -4,6 +4,7 @@
   "description": "Wifi connected irrigation unit, three zones, all individually controlled with a pi and 12VDC solenoid valves. ",
   "main": "index.js",
   "scripts": {
+    "start": "node app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
