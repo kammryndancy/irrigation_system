@@ -85,6 +85,12 @@ New state: ${JSON.stringify(formattedState)}
   });
 }
 
+function closeSwitches() {
+  switches[0].setState("off");
+  switches[1].setState("off");
+  switches[2].setState("off");
+}
+
 //Server Configuration
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(__dirname + "/public"));
@@ -108,19 +114,25 @@ app.post("/api/switches/:id", function(req, res) {
   // For now, uses a simple password query in the url string.
   // Example: POST to localhost:8000/API/switches/sw1?password=test
   if (req.query.password === process.env.PASS) {
-    let foundSwitch = getSwitch(req.params.id);
-
-    // Optional On / Off command. If not included, defaults to a toggle.
-
-    if (!(req.query.command === "on" || req.query.command === "off")) {
-      foundSwitch.toggle();
+    if(req.params.id === "off") {
+      closeSwitches();
+      saveState();
+      res.send(switches);
     } else {
-      foundSwitch.setState(req.query.command);
-    }
+      let foundSwitch = getSwitch(req.params.id);
 
-    saveState();
-    console.log("postSwitch " + JSON.stringify(foundSwitch));
-    res.json(foundSwitch);
+      // Optional On / Off command. If not included, defaults to a toggle.
+
+      if (!(req.query.command === "on" || req.query.command === "off")) {
+        foundSwitch.toggle();
+      } else {
+        foundSwitch.setState(req.query.command);
+      }
+
+      saveState();
+      console.log("postSwitch " + JSON.stringify(foundSwitch));
+      res.json(foundSwitch);
+    }
   } else {
     console.log("invalid password");
     res.send("try again");
