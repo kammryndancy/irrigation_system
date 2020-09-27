@@ -52,9 +52,11 @@ function Switch(switchValues) {
 
 // needed due to a quirk with PythonShell
 function onString(number) {
+  console.log("Turning on switch " + number);
   return "./public/python/sw" + number + "_on.py";
 }
 function offString(number) {
+  console.log("Turning off switch " + number);
   return "./public/python/sw" + number + "_off.py";
 }
 
@@ -91,6 +93,12 @@ function closeSwitches() {
   switches[2].setState("off");
 }
 
+function openSwitches() {
+  switches[0].setState("on");
+  switches[1].setState("on");
+  switches[2].setState("on");
+}
+
 //Server Configuration
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(__dirname + "/public"));
@@ -116,6 +124,10 @@ app.post("/api/switches/:id", function(req, res) {
   if (req.query.password === process.env.PASS) {
     if(req.params.id === "off") {
       closeSwitches();
+      saveState();
+      res.send(switches);
+    } else if (req.params.id === "on") {
+      openSwitches();
       saveState();
       res.send(switches);
     } else {
