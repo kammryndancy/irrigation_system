@@ -6,6 +6,11 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const path = require("path");
 const app = express();
+const gpio = require("onoff").Gpio;
+
+const relays = [
+    new gpio(3, "out")
+];
 
 // Switch states held in memory
 const switches = [];
@@ -88,12 +93,14 @@ New state: ${JSON.stringify(formattedState)}
 }
 
 function closeSwitches() {
+  relays.forEach(relay => relay.writeSync(0));
   switches[0].setState("off");
   switches[1].setState("off");
   switches[2].setState("off");
 }
 
 function openSwitches() {
+  relays.forEach(relay => relay.writeSync(1));
   switches[0].setState("on");
   switches[1].setState("on");
   switches[2].setState("on");
