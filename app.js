@@ -6,11 +6,6 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const path = require("path");
 const app = express();
-const gpio = require("onoff").Gpio;
-
-const relays = [
-    new gpio(3, "out")
-];
 
 // Switch states held in memory
 const switches = [];
@@ -84,10 +79,7 @@ function saveState() {
       console.error(err);
     } else {
       let date = new Date();
-      console.log(`
-${date.toLocaleDateString()} ${date.toLocaleTimeString()} State has been updated
-New state: ${JSON.stringify(formattedState)}
-`);
+      console.log(`${date.toLocaleDateString()} ${date.toLocaleTimeString()} State has been updated New state: ${JSON.stringify(formattedState)}`);
     }
   });
 }
@@ -105,6 +97,13 @@ function openSwitches() {
   switches[1].setState("on");
   switches[2].setState("on");
 }
+
+function shutDown() {
+  closeSwitches();
+}
+
+process.on('SIGTERM', shutDown);
+process.on('SIGINT', shutDown);
 
 //Server Configuration
 app.use(bodyParser.urlencoded({ extended: true }));
