@@ -1,7 +1,7 @@
 # Edit line 6 to match your chosen GPIO pin
-
 import RPi.GPIO as GPIO
-GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BCM)
-GPIO.setup(3, GPIO.IN)
+GPIO.setwarnings(False)
+GPIO.setup(3, GPIO.OUT)
+GPIO.output(3, GPIO.LOW)
 GPIO.cleanup()
